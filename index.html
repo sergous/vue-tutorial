@@ -37,8 +37,13 @@
             htmlText: '<strong>Very</strong> nice!'
         },
         computed: {
-            reverseMessage: function () {
-                return this.message.split('').reverse().join('')
+            reverseMessage: {
+                get: function () {
+                    return this.message.split('').reverse().join('')
+                },
+                set: function (newValue) {
+                    this.message = newValue.split('').reverse().join('')
+                }
             }
         },
         filters: {
