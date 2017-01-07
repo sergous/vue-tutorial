@@ -9,6 +9,7 @@
 
 <div id="app">
     <p>{{message}}</p>
+    <p v-html="htmlText" v-once=""></p>
     <ol>
         <todo-item v-for="todo in todos" v-bind:todo="todo"></todo-item>
     </ol>
@@ -30,7 +31,8 @@
                 {text: 'Tree'},
                 {text: 'House'},
                 {text: 'Son'}
-            ]
+            ],
+            htmlText: '<strong>Very</strong> nice!'
         },
         methods: {
             reverseMessage: function () {
