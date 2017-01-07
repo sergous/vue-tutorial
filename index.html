@@ -8,13 +8,13 @@
 <body>
 
 <div id="app">
-    <a v-bind:href="message" v-if="isHref(message)">{{message}}</a>
+    <a :href="message" v-if="isHref(message)">{{message}}</a>
     <p v-html="htmlText" v-once=""></p>
     <ol>
         <todo-item v-for="todo in todos" v-bind:todo="todo"></todo-item>
     </ol>
     <input v-model="message"><input type="checkbox" v-model="decap"> Decapitilize
-    <button v-on:click="message = reverseMessage" v-bind:disabled="isEmpty(message)">Reverse</button>
+    <button @click="message = reverseMessage" v-bind:disabled="isEmpty(message)">Reverse</button>
     <p>{{reverseMessage | capitalize({decap: decap})}}</p>
 </div>
 <script src="https://unpkg.com/vue/dist/vue.js"></script>
