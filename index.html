@@ -9,6 +9,7 @@
 
 <div id="app">
     <p>{{message}}</p>
+    <a v-bind:href="message" v-if="isHref(message)">{{message}}</a>
     <p v-html="htmlText" v-once=""></p>
     <ol>
         <todo-item v-for="todo in todos" v-bind:todo="todo"></todo-item>
@@ -40,6 +41,9 @@
             },
             isEmpty: function(message) {
                 return message.length == 0
+            },
+            isHref: function(message) {
+                return message.substr(0, 4) == 'http'
             }
         },
         created: function () {
