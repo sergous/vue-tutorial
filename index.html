@@ -14,7 +14,7 @@
         <todo-item v-for="todo in todos" v-bind:todo="todo"></todo-item>
     </ol>
     <input v-model="message">
-    <button v-on:click="reverseMessage">Reverse</button>
+    <button v-on:click="reverseMessage" v-bind:disabled="isEmpty(message)">Reverse</button>
 </div>
 <script src="https://unpkg.com/vue/dist/vue.js"></script>
 <script>
@@ -37,6 +37,9 @@
         methods: {
             reverseMessage: function () {
                 this.message = this.message.split('').reverse().join('')
+            },
+            isEmpty: function(message) {
+                return message.length == 0
             }
         },
         created: function () {
