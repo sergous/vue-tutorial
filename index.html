@@ -8,14 +8,14 @@
 <body>
 
 <div id="app">
-    <p>{{message}}</p>
     <a v-bind:href="message" v-if="isHref(message)">{{message}}</a>
     <p v-html="htmlText" v-once=""></p>
     <ol>
         <todo-item v-for="todo in todos" v-bind:todo="todo"></todo-item>
     </ol>
     <input v-model="message">
-    <button v-on:click="reverseMessage" v-bind:disabled="isEmpty(message)">Reverse</button>
+    <button v-on:click="message = reverseMessage" v-bind:disabled="isEmpty(message)">Reverse</button>
+    <p>{{reverseMessage}}</p>
 </div>
 <script src="https://unpkg.com/vue/dist/vue.js"></script>
 <script>
@@ -35,10 +35,12 @@
             ],
             htmlText: '<strong>Very</strong> nice!'
         },
-        methods: {
+        computed: {
             reverseMessage: function () {
-                this.message = this.message.split('').reverse().join('')
-            },
+                return this.message.split('').reverse().join('')
+            }
+        },
+        methods: {
             isEmpty: function(message) {
                 return message.length == 0
             },
