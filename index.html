@@ -4,11 +4,14 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <style type="text/css">
-        .text-danger {
+        .error {
             color: red;
         }
         .active {
             color: green;
+        }
+        .blank:before {
+            content: 'Empty';
         }
     </style>
 </head>
@@ -21,8 +24,8 @@
         <todo-item v-for="todo in todos" v-bind:todo="todo"></todo-item>
     </ol>
     <input v-model="message"><input type="checkbox" v-model="decap"> Decapitilize
-    <button @click="message = reverseMessage" v-bind:disabled="isEmpty(message)">Reverse</button>
-    <p v-bind:class="decapClass">{{reverseMessage | capitalize({decap: decap})}}</p>
+    <button @click="message = reverseMessage" v-bind:disabled="isEmpty()">Reverse</button>
+    <p v-bind:class="[{blank: isEmpty()}, decap ? activeClass : errorClass]">{{reverseMessage | capitalize({decap: decap})}}</p>
     <p>Answer to yes-no question: </p>
     <input v-model="question"> {{answer | capitalize}}
 </div>
@@ -58,10 +61,14 @@
                     this.message = newValue.split('').reverse().join('')
                 }
             },
-            decapClass: function () {
+            activeClass: function () {
                 return {
-                    'text-danger': !this.decap,
-                    active: this.decap
+                    active: true
+                }
+            },
+            errorClass: function () {
+                return {
+                    'error': true,
                 }
             }
         },
@@ -77,8 +84,8 @@
           }
         },
         methods: {
-            isEmpty: function(message) {
-                return message.length == 0
+            isEmpty: function() {
+                return this.message.length == 0
             },
             isHref: function(message) {
                 return message.substr(0, 4) == 'http'
