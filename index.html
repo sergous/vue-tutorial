@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+</head>
+<body>
+
+<div id="app">
+    <p>{{message}}</p>
+    <ol>
+        <todo-item v-for="todo in todos" v-bind:todo="todo"></todo-item>
+    </ol>
+    <input v-model="message">
+    <button v-on:click="reverseMessage">Reverse</button>
+</div>
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<script>
+    Vue.component('todo-item', {
+        props: ['todo'],
+        template: '<li>{{todo.text}}</li>'
+    });
+
+    var app = new Vue({
+        el: '#app',
+        data: {
+            message: 'Hello',
+            todos: [
+                {text: 'Tree'},
+                {text: 'House'},
+                {text: 'Son'}
+            ]
+        },
+        methods: {
+            reverseMessage: function () {
+                this.message = this.message.split('').reverse().join('')
+            }
+        }
+    })
+</script>
+</body>
+</html>
