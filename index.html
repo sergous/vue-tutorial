@@ -3,7 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-
+    <style type="text/css">
+        .text-danger {
+            color: red;
+        }
+        .active {
+            color: green;
+        }
+    </style>
 </head>
 <body>
 
@@ -15,7 +22,7 @@
     </ol>
     <input v-model="message"><input type="checkbox" v-model="decap"> Decapitilize
     <button @click="message = reverseMessage" v-bind:disabled="isEmpty(message)">Reverse</button>
-    <p>{{reverseMessage | capitalize({decap: decap})}}</p>
+    <p v-bind:class="decapClass">{{reverseMessage | capitalize({decap: decap})}}</p>
     <p>Answer to yes-no question: </p>
     <input v-model="question"> {{answer | capitalize}}
 </div>
@@ -49,6 +56,12 @@
                 },
                 set: function (newValue) {
                     this.message = newValue.split('').reverse().join('')
+                }
+            },
+            decapClass: function () {
+                return {
+                    'text-danger': !this.decap,
+                    active: this.decap
                 }
             }
         },
