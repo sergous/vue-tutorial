@@ -36,6 +36,12 @@
             reverseMessage: function () {
                 this.message = this.message.split('').reverse().join('')
             }
+        },
+        created: function () {
+            console.log('Created message: ' + this.message)
+        },
+        updated: function () {
+            console.log('Updated message: ' + this.message)
         }
     })
 </script>
