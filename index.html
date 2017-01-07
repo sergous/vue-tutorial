@@ -13,9 +13,9 @@
     <ol>
         <todo-item v-for="todo in todos" v-bind:todo="todo"></todo-item>
     </ol>
-    <input v-model="message">
+    <input v-model="message"><input type="checkbox" v-model="decap"> Decapitilize
     <button v-on:click="message = reverseMessage" v-bind:disabled="isEmpty(message)">Reverse</button>
-    <p>{{reverseMessage}}</p>
+    <p>{{reverseMessage | capitalize({decap: decap})}}</p>
 </div>
 <script src="https://unpkg.com/vue/dist/vue.js"></script>
 <script>
@@ -28,6 +28,7 @@
         el: '#app',
         data: {
             message: 'Hello',
+            decap: true,
             todos: [
                 {text: 'Tree'},
                 {text: 'House'},
@@ -39,6 +40,17 @@
             reverseMessage: function () {
                 return this.message.split('').reverse().join('')
             }
+        },
+        filters: {
+          capitalize: function (value, prop) {
+              if(!value) return ''
+              value = value.toString()
+              prop = prop || {}
+              if(!prop.decap)
+                return value.charAt(0).toUpperCase() + value.slice(1)
+              else
+                return value.charAt(0).toUpperCase() + value.toLocaleLowerCase().slice(1)
+          }
         },
         methods: {
             isEmpty: function(message) {
