@@ -32,7 +32,9 @@
     <h3>Answer to yes-no question</h3>
     <input v-model="question"> {{answer | capitalize}}
     <p>Conditional link on 'http://':
-    <a :href="message" v-if="isHref(question)">{{question}}</a>
+    <template v-if="isHref(question)">
+        <a :href="message">{{question}}</a>
+    </template>
     </p>
     <h3>Условное отображение</h3>
     <div v-if="isEmail">
