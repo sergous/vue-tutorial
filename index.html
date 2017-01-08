@@ -30,10 +30,10 @@
     <input v-model="question"> {{answer | capitalize}}
     <h3>Условное отображение</h3>
     <div v-if="isEmail">
-        Введите логин: <input>
+        Введите логин: <input key="username-imput">
     </div>
     <div v-else>
-        Введите пароль: <input>
+        Введите пароль: <input key="password-imput">
     </div>
     <button @click="isEmail = !isEmail">Ввести</button>
 </div>
