@@ -18,14 +18,22 @@
 <body>
 
 <div id="app">
-    <a :href="message" v-if="isHref(message)">{{message}}</a>
+    <h3>HTML static message</h3>
     <p v-html="htmlText" v-once=""></p>
+
+    <h3>Component todo list</h3>
     <todo-list :todos="todos"></todo-list>
+
+    <h3>Computed reverse message</h3>
     <input v-model="message" :style="[inputStyle, validStyle]"><input type="checkbox" v-model="decap"> Decapitilize
     <button @click="message = reverseMessage" v-bind:disabled="isEmpty()">Reverse</button>
     <p v-bind:class="[{blank: isEmpty()}, decap ? activeClass : errorClass]">{{reverseMessage | capitalize({decap: decap})}}</p>
-    <p>Answer to yes-no question: </p>
+
+    <h3>Answer to yes-no question</h3>
     <input v-model="question"> {{answer | capitalize}}
+    <p>Conditional link on 'http://':
+    <a :href="message" v-if="isHref(question)">{{question}}</a>
+    </p>
     <h3>Условное отображение</h3>
     <div v-if="isEmail">
         Введите логин: <input key="username-imput">
@@ -53,7 +61,8 @@
     var app = new Vue({
         el: '#app',
         data: {
-            message: 'Hello',
+            htmlText: '<strong>Hello</strong> world!',
+            message: 'Reverse this',
             question: '',
             answer: 'Just ask a question!',
             decap: true,
@@ -62,7 +71,6 @@
                 {text: 'House'},
                 {text: 'Son'}
             ],
-            htmlText: '<strong>Very</strong> nice!',
             inputStyle: {
                 backgroundColor: 'black',
                 border: '1px'
