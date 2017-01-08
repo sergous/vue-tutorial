@@ -21,7 +21,7 @@
     <a :href="message" v-if="isHref(message)">{{message}}</a>
     <p v-html="htmlText" v-once=""></p>
     <ol>
-        <todo-item v-for="todo in todos" v-bind:todo="todo"></todo-item>
+        <todo-item v-for="(todo, index) in todos" v-bind:todo="todo" :class="{active: index==0}"></todo-item>
     </ol>
     <input v-model="message" :style="[inputStyle, validStyle]"><input type="checkbox" v-model="decap"> Decapitilize
     <button @click="message = reverseMessage" v-bind:disabled="isEmpty()">Reverse</button>
