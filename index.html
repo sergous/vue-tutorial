@@ -23,7 +23,7 @@
     <ol>
         <todo-item v-for="todo in todos" v-bind:todo="todo"></todo-item>
     </ol>
-    <input v-model="message"><input type="checkbox" v-model="decap"> Decapitilize
+    <input v-model="message" :style="[inputStyle, validStyle]"><input type="checkbox" v-model="decap"> Decapitilize
     <button @click="message = reverseMessage" v-bind:disabled="isEmpty()">Reverse</button>
     <p v-bind:class="[{blank: isEmpty()}, decap ? activeClass : errorClass]">{{reverseMessage | capitalize({decap: decap})}}</p>
     <p>Answer to yes-no question: </p>
@@ -50,7 +50,14 @@
                 {text: 'House'},
                 {text: 'Son'}
             ],
-            htmlText: '<strong>Very</strong> nice!'
+            htmlText: '<strong>Very</strong> nice!',
+            inputStyle: {
+                backgroundColor: 'black',
+                border: '1px'
+            },
+            validStyle: {
+                color: 'lightgreen'
+            }
         },
         computed: {
             reverseMessage: {
