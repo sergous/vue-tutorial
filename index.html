@@ -28,6 +28,14 @@
     <p v-bind:class="[{blank: isEmpty()}, decap ? activeClass : errorClass]">{{reverseMessage | capitalize({decap: decap})}}</p>
     <p>Answer to yes-no question: </p>
     <input v-model="question"> {{answer | capitalize}}
+    <h3>Условное отображение</h3>
+    <div v-if="isEmail">
+        Введите логин <input>
+    </div>
+    <div v-else>
+        Введите пароль: <input type="password">
+    </div>
+    <button @click="isEmail = !isEmail">Ввести</button>
 </div>
 <script src="https://unpkg.com/vue/dist/vue.js"></script>
 <script src="https://unpkg.com/axios@0.12.0/dist/axios.min.js"></script>
@@ -57,7 +65,8 @@
             },
             validStyle: {
                 color: 'lightgreen'
-            }
+            },
+            isEmail: true
         },
         computed: {
             reverseMessage: {
