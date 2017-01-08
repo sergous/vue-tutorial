@@ -20,9 +20,7 @@
 <div id="app">
     <a :href="message" v-if="isHref(message)">{{message}}</a>
     <p v-html="htmlText" v-once=""></p>
-    <ol>
-        <todo-item v-for="(todo, index) in todos" v-bind:todo="todo" :class="{active: index==0}"></todo-item>
-    </ol>
+    <todo-list :todos="todos"></todo-list>
     <input v-model="message" :style="[inputStyle, validStyle]"><input type="checkbox" v-model="decap"> Decapitilize
     <button @click="message = reverseMessage" v-bind:disabled="isEmpty()">Reverse</button>
     <p v-bind:class="[{blank: isEmpty()}, decap ? activeClass : errorClass]">{{reverseMessage | capitalize({decap: decap})}}</p>
@@ -44,6 +42,12 @@
     Vue.component('todo-item', {
         props: ['todo'],
         template: '<li>{{todo.text}}</li>'
+    });
+    Vue.component('todo-list', {
+        props: ['todos'],
+        template: `<ol>
+                        <todo-item v-for="(todo, index) in todos" :todo="todo" :class="{active: index==0}"></todo-item>
+                   </ol>`
     });
 
     var app = new Vue({
