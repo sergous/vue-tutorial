@@ -42,10 +42,10 @@
     </p>
     <h3>Условное отображение</h3>
     <div v-if="isEmail">
-        Введите логин: <input key="username-imput">
+        Введите логин: <input key="username-imput" @keyup.enter="check"> + Enter to check
     </div>
     <div v-else>
-        Введите пароль: <input key="password-imput">
+        Введите пароль: <input key="password-imput" @keyup.enter="check"> + Enter to check
     </div>
     <button @click="isEmail = !isEmail">Ввести</button>
     <h3>Computed even numbers list</h3>
@@ -145,6 +145,12 @@
             },
             isEmpty: function() {
                 return this.message.length == 0
+            },
+            check: function(event) {
+                if(!event) throw new Error('Event not given')
+                console.log('Input value: ' + event.target.value)
+                if(event && event.target.value.length == 0) alert("Can't be empty")
+                else this.isEmail = !this.isEmail
             },
             isHref: function(message) {
                 return message.substr(0, 4) == 'http'
