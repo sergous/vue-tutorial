@@ -48,6 +48,8 @@
         Введите пароль: <input key="password-imput">
     </div>
     <button @click="isEmail = !isEmail">Ввести</button>
+    <h3>Computed even numbers list</h3>
+    <ol><li v-for="n in evenNumbers">{{n}}</li></ol>
 </div>
 <script src="https://unpkg.com/vue/dist/vue.js"></script>
 <script src="https://unpkg.com/axios@0.12.0/dist/axios.min.js"></script>
@@ -97,7 +99,8 @@
             validStyle: {
                 color: 'lightgreen'
             },
-            isEmail: true
+            isEmail: true,
+            numbers: [5, 7, 6, 8, 10, 23],
         },
         computed: {
             reverseMessage: {
@@ -117,6 +120,11 @@
                 return {
                     'error': true,
                 }
+            },
+            evenNumbers: function () {
+                return this.numbers.filter(function (number) {
+                    return number % 2 === 0
+                })
             }
         },
         filters: {
