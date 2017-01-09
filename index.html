@@ -23,6 +23,10 @@
 
     <h3>Component todo list</h3>
     <todo-list :todos="todos"></todo-list>
+    <input type="text"
+           v-model="newTodoText"
+           v-on:keyup.enter="addNewTodo"
+           placeholder="New todo item">
 
     <h3>Computed reverse message</h3>
     <input v-model="message" :style="[inputStyle, validStyle]"><input type="checkbox" v-model="decap"> Decapitilize
@@ -51,12 +55,24 @@
 <script>
     Vue.component('todo-item', {
         props: ['todo'],
-        template: '<li>{{todo}}</li>'
+        template: `<li>{{todo.text}}
+                       <button @click="$emit('remove')">X</button>
+                   </li>`
     });
     Vue.component('todo-list', {
         props: ['todos'],
+        created: function () {
+            console.log(`Created todo list: ${this.todos.length} items`)
+        },
+        updated: function () {
+            console.log(`Updated todo list: ${this.todos.length} items`)
+        },
         template: `<ol>
-                        <todo-item v-for="(value, key, index) in todos" :todo="value" :class="{active: (key == 'tree' || index == 2)}"></todo-item>
+                        <todo-item v-for="(todo, index) in todos"
+                                   :todo="todo"
+                                   :class="{active: index==0}"
+                                   v-on:remove="todos.splice(index, 1)"
+                        ></todo-item>
                    </ol>`
     });
 
@@ -68,11 +84,12 @@
             question: '',
             answer: 'Just ask a question!',
             decap: true,
-            todos: {
-                tree: 'Oak Tree',
-                house: 'Ocean House',
-                child: 'Son',
-            },
+            todos: [
+                {text: 'Tree'},
+                {text: 'House'},
+                {text: 'Son'}
+            ],
+            newTodoText: '',
             inputStyle: {
                 backgroundColor: 'black',
                 border: '1px'
@@ -114,6 +131,10 @@
           }
         },
         methods: {
+            addNewTodo: function() {
+                this.todos.push({text: this.newTodoText})
+                this.newTodoText = ''
+            },
             isEmpty: function() {
                 return this.message.length == 0
             },
@@ -136,12 +157,6 @@
                 // API request delay
                 500
             )
-        },
-        created: function () {
-            console.log('Created message: ' + this.message)
-        },
-        updated: function () {
-            console.log('Updated message: ' + this.message)
         },
         watch: {
             question: function(newQuestion) {
