@@ -51,12 +51,12 @@
 <script>
     Vue.component('todo-item', {
         props: ['todo'],
-        template: '<li>{{todo.text}}</li>'
+        template: '<li>{{todo}}</li>'
     });
     Vue.component('todo-list', {
         props: ['todos'],
         template: `<ol>
-                        <todo-item v-for="(todo, index) in todos" :todo="todo" :class="{active: index==0}"></todo-item>
+                        <todo-item v-for="(value, key, index) in todos" :todo="value" :class="{active: (key == 'tree' || index == 2)}"></todo-item>
                    </ol>`
     });
 
@@ -68,11 +68,11 @@
             question: '',
             answer: 'Just ask a question!',
             decap: true,
-            todos: [
-                {text: 'Tree'},
-                {text: 'House'},
-                {text: 'Son'}
-            ],
+            todos: {
+                tree: 'Oak Tree',
+                house: 'Ocean House',
+                child: 'Son',
+            },
             inputStyle: {
                 backgroundColor: 'black',
                 border: '1px'
