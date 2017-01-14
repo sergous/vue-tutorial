@@ -30,12 +30,7 @@
     <p v-bind:class="[{blank: isEmpty()}, decap ? activeClass : errorClass]">{{reverseMessage | capitalize({decap: decap})}}</p>
 
     <h3>Answer to yes-no question</h3>
-    <input v-model="question"> {{answer | capitalize}}
-    <p>Conditional link on 'http://':
-    <template v-if="isHref(question)">
-        <a :href="message">{{question}}</a>
-    </template>
-    </p>
+    <yes-no></yes-no>
     <h3>Условное отображение</h3>
     <login-form></login-form>
     <h3>Computed even numbers list</h3>
@@ -109,14 +104,67 @@
                         <button @click="isEmail = !isEmail">Ввести</button>
                     </div>`
     });
+    Vue.component('yes-no', {
+        data: function () {
+            return {
+                question: '',
+                answer: 'Just ask a question!'
+            }
+        },
+        methods: {
+            isHref: function(message) {
+                return message.substr(0, 4) == 'http'
+            },
+            getAnswer: _.debounce(
+                function () {
+                    var vm = this
+                    if(this.question.indexOf('?') === -1) {
+                        vm.answer = 'Questions with ? mark'
+                        return
+                    }
 
+                    vm.answer = 'Thinking...'
+                    axios.get('http://yesno.wtf/api')
+                        .then((res) => {vm.answer = res.data.answer})
+                    .catch((error) => {vm.answer = 'Api Error ' + error})
+                },
+                // API request delay
+                500
+            )
+        },
+        watch: {
+            question: function(newQuestion) {
+                this.answer = 'Listerning...'
+                this.getAnswer()
+            }
+        },
+        filters: {
+            capitalize: capitalizeFilter
+        },
+        template:  `<div>
+                        <input v-model="question"> {{answer | capitalize}}
+                        <p>Conditional link on 'http://':
+                            <template v-if="isHref(question)">
+                                <a :href="question">{{question}}</a>
+                            </template>
+                        </p>
+                    </div>`
+    })
+
+    var capitalizeFilter = function (value, prop) {
+        if(!value) return ''
+        value = value.toString()
+        prop = prop || {}
+        if(!prop.decap)
+            return value.charAt(0).toUpperCase() + value.slice(1)
+        else
+            return value.charAt(0).toUpperCase() + value.toLocaleLowerCase().slice(1)
+    };
     var app = new Vue({
         el: '#app',
         data: {
             htmlText: '<strong>Hello</strong> world!',
             message: 'Reverse this',
-            question: '',
-            answer: 'Just ask a question!',
             decap: true,
             todos: [
                 {text: 'Tree'},
@@ -159,44 +207,11 @@
             }
         },
         filters: {
-          capitalize: function (value, prop) {
-              if(!value) return ''
-              value = value.toString()
-              prop = prop || {}
-              if(!prop.decap)
-                return value.charAt(0).toUpperCase() + value.slice(1)
-              else
-                return value.charAt(0).toUpperCase() + value.toLocaleLowerCase().slice(1)
-          }
+          capitalize: capitalizeFilter
         },
         methods: {
             isEmpty: function() {
                 return this.message.length == 0
-            },
-            isHref: function(message) {
-                return message.substr(0, 4) == 'http'
-            },
-            getAnswer: _.debounce(
-                function () {
-                    var vm = this
-                    if(this.question.indexOf('?') === -1) {
-                        vm.answer = 'Questions with ? mark'
-                        return
-                    }
-
-                    vm.answer = 'Thinking...'
-                    axios.get('http://yesno.wtf/api')
-                        .then((res) => {vm.answer = res.data.answer})
-                        .catch((error) => {vm.answer = 'Api Error ' + error})
-                },
-                // API request delay
-                500
-            )
-        },
-        watch: {
-            question: function(newQuestion) {
-                this.answer = 'Listerning...'
-                this.getAnswer()
             }
         }
     })
