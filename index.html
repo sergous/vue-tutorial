@@ -23,10 +23,6 @@
 
     <h3>Component todo list</h3>
     <todo-list :todos="todos"></todo-list>
-    <input type="text"
-           v-model="newTodoText"
-           v-on:keyup.enter="addNewTodo"
-           placeholder="New todo item">
 
     <h3>Computed reverse message</h3>
     <input v-model="message" :style="[inputStyle, validStyle]"><input type="checkbox" v-model="decap"> Decapitilize
@@ -57,19 +53,37 @@
     });
     Vue.component('todo-list', {
         props: ['todos'],
+        data: function () {
+            return {
+                newTodoText: ''
+            }
+        },
+        methods: {
+            addNewTodo: function() {
+                this.todos.push({text: this.newTodoText})
+                this.newTodoText = ''
+            }
+        },
         created: function () {
             console.log(`Created todo list: ${this.todos.length} items`)
         },
         updated: function () {
             console.log(`Updated todo list: ${this.todos.length} items`)
         },
-        template: `<ol>
-                        <todo-item v-for="(todo, index) in todos"
-                                   :todo="todo"
-                                   :class="{active: index==0}"
-                                   v-on:remove="todos.splice(index, 1)"
-                        ></todo-item>
-                   </ol>`
+        template: `<div>
+                       <ol>
+                            <todo-item v-for="(todo, index) in todos"
+                                       :todo="todo"
+                                       :class="{active: index==0}"
+                                       v-on:remove="todos.splice(index, 1)"
+                            ></todo-item>
+                       </ol>
+
+                        <input type="text"
+                               v-model="newTodoText"
+                               v-on:keyup.enter="addNewTodo"
+                               placeholder="New todo item">
+                    </div>`
     });
     Vue.component('login-form', {
         data: function() {
@@ -109,7 +123,6 @@
                 {text: 'House'},
                 {text: 'Son'}
             ],
-            newTodoText: '',
             inputStyle: {
                 backgroundColor: 'black',
                 border: '1px'
@@ -157,10 +170,6 @@
           }
         },
         methods: {
-            addNewTodo: function() {
-                this.todos.push({text: this.newTodoText})
-                this.newTodoText = ''
-            },
             isEmpty: function() {
                 return this.message.length == 0
             },
