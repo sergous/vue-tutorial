@@ -17,7 +17,7 @@
 </head>
 <body>
 
-<div id="app">
+<div id="todo-app">
     <h3>HTML static message</h3>
     <p v-html="htmlText" v-once=""></p>
 
@@ -26,12 +26,12 @@
 
     <h3>Computed values</h3>
     <computed-values></computed-values>
-
-    <h3>Answer to yes-no question</h3>
-    <yes-no></yes-no>
-
-    <h3>Условное отображение</h3>
-    <login-form></login-form>
+</div>
+<div>
+    <h3>Yes-no application</h3>
+    <div id="yes-no-app">
+        <component v-bind:is="currentView"></component>
+    </div>
 </div>
 <script src="https://unpkg.com/vue/dist/vue.js"></script>
 <script src="https://unpkg.com/axios@0.12.0/dist/axios.min.js"></script>
@@ -77,7 +77,8 @@
                                placeholder="New todo item">
                     </div>`
     });
-    Vue.component('login-form', {
+
+    var loginFormComponent = Vue.component('login-form', {
         data: function() {
             return {
                 isEmail: true
@@ -101,7 +102,8 @@
                         <button @click="isEmail = !isEmail">Ввести</button>
                     </div>`
     });
-    Vue.component('yes-no', {
+
+    var yesNoComponent = Vue.component('yes-no', {
         data: function () {
             return {
                 question: '',
@@ -218,8 +220,8 @@
                    </div>`
     })
 
-    var app = new Vue({
-        el: '#app',
+    var todoApp = new Vue({
+        el: '#todo-app',
         data: {
             htmlText: '<strong>Hello</strong> world!',
             todos: [
@@ -227,6 +229,17 @@
                 {text: 'House'},
                 {text: 'Son'}
             ]
+        }
+    })
+
+    var yesNoApp = new Vue({
+        el: '#yes-no-app',
+        data: {
+          currentView: 'login'
+        },
+        components: {
+            login: loginFormComponent,
+            app: yesNoComponent
         }
     })
 </script>
