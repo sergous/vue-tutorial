@@ -91,6 +91,12 @@
                 if(event && event.target.value.length == 0) alert("Can't be empty")
                 else this.isEmail = !this.isEmail
             },
+            submitLogin: function () {
+                if(this.isEmail)
+                    this.isEmail = !this.isEmail
+                else
+                    yesNoApp.$emit('logged', this.isEmail)
+            }
         },
         template: `<div>
                         <div v-if="isEmail">
@@ -99,7 +105,7 @@
                         <div v-else>
                             Введите пароль: <input key="password-imput" @keyup.enter="check"> + Enter to check
                         </div>
-                        <button @click="isEmail = !isEmail">Ввести</button>
+                        <button @click="submitLogin">Ввести</button>
                     </div>`
     });
 
@@ -239,8 +245,11 @@
         },
         components: {
             login: loginFormComponent,
-            app: yesNoComponent
+            yesNo: yesNoComponent
         }
+    })
+    yesNoApp.$on('logged', function (msg) {
+        yesNoApp.currentView = 'yesNo'
     })
 </script>
 </body>
