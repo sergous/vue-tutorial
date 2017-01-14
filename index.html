@@ -41,13 +41,7 @@
     </template>
     </p>
     <h3>Условное отображение</h3>
-    <div v-if="isEmail">
-        Введите логин: <input key="username-imput" @keyup.enter="check"> + Enter to check
-    </div>
-    <div v-else>
-        Введите пароль: <input key="password-imput" @keyup.enter="check"> + Enter to check
-    </div>
-    <button @click="isEmail = !isEmail">Ввести</button>
+    <login-form></login-form>
     <h3>Computed even numbers list</h3>
     <ol><li v-for="n in evenNumbers">{{n}}</li></ol>
 </div>
@@ -77,6 +71,30 @@
                         ></todo-item>
                    </ol>`
     });
+    Vue.component('login-form', {
+        data: function() {
+            return {
+                isEmail: true
+            }
+        },
+        methods: {
+            check: function(event) {
+                if(!event) throw new Error('Event not given')
+                console.log('Input value: ' + event.target.value)
+                if(event && event.target.value.length == 0) alert("Can't be empty")
+                else this.isEmail = !this.isEmail
+            },
+        },
+        template: `<div>
+                        <div v-if="isEmail">
+                            Введите логин: <input key="username-imput" @keyup.enter="check"> + Enter to check
+                        </div>
+                        <div v-else>
+                            Введите пароль: <input key="password-imput" @keyup.enter="check"> + Enter to check
+                        </div>
+                        <button @click="isEmail = !isEmail">Ввести</button>
+                    </div>`
+    });
 
     var app = new Vue({
         el: '#app',
@@ -99,7 +117,6 @@
             validStyle: {
                 color: 'lightgreen'
             },
-            isEmail: true,
             numbers: [5, 7, 6, 8, 10, 23],
             counter: 0
         },
@@ -146,12 +163,6 @@
             },
             isEmpty: function() {
                 return this.message.length == 0
-            },
-            check: function(event) {
-                if(!event) throw new Error('Event not given')
-                console.log('Input value: ' + event.target.value)
-                if(event && event.target.value.length == 0) alert("Can't be empty")
-                else this.isEmail = !this.isEmail
             },
             isHref: function(message) {
                 return message.substr(0, 4) == 'http'
