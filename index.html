@@ -24,17 +24,14 @@
     <h3>Component todo list</h3>
     <todo-list :todos="todos"></todo-list>
 
-    <h3>Computed reverse message</h3>
-    <input v-model="message" :style="[inputStyle, validStyle]"><input type="checkbox" v-model="decap"> Decapitilize
-    <button @click="message = reverseMessage" v-bind:disabled="isEmpty()" v-on:click="counter += 1">Reverse</button> Click counter: {{counter}}
-    <p v-bind:class="[{blank: isEmpty()}, decap ? activeClass : errorClass]">{{reverseMessage | capitalize({decap: decap})}}</p>
+    <h3>Computed values</h3>
+    <computed-values></computed-values>
 
     <h3>Answer to yes-no question</h3>
     <yes-no></yes-no>
+
     <h3>Условное отображение</h3>
     <login-form></login-form>
-    <h3>Computed even numbers list</h3>
-    <ol><li v-for="n in evenNumbers">{{n}}</li></ol>
 </div>
 <script src="https://unpkg.com/vue/dist/vue.js"></script>
 <script src="https://unpkg.com/axios@0.12.0/dist/axios.min.js"></script>
@@ -151,6 +148,7 @@
                     </div>`
     })
 
+
     var capitalizeFilter = function (value, prop) {
         if(!value) return ''
         value = value.toString()
@@ -160,26 +158,21 @@
         else
             return value.charAt(0).toUpperCase() + value.toLocaleLowerCase().slice(1)
     };
-    var app = new Vue({
-        el: '#app',
-        data: {
-            htmlText: '<strong>Hello</strong> world!',
-            message: 'Reverse this',
-            decap: true,
-            todos: [
-                {text: 'Tree'},
-                {text: 'House'},
-                {text: 'Son'}
-            ],
-            inputStyle: {
-                backgroundColor: 'black',
-                border: '1px'
-            },
-            validStyle: {
-                color: 'lightgreen'
-            },
-            numbers: [5, 7, 6, 8, 10, 23],
-            counter: 0
+    Vue.component('computed-values',{
+        data: function() {
+            return {
+                message: 'Reverse this',
+                decap: true,
+                inputStyle: {
+                    backgroundColor: 'black',
+                    border: '1px'
+                },
+                validStyle: {
+                    color: 'lightgreen'
+                },
+                numbers: [5, 7, 6, 8, 10, 23],
+                counter: 0
+            }
         },
         computed: {
             reverseMessage: {
@@ -213,6 +206,27 @@
             isEmpty: function() {
                 return this.message.length == 0
             }
+        },
+        template: `<div>
+                        <h5>Computed reverse message</h5>
+                        <input v-model="message" :style="[inputStyle, validStyle]"><input type="checkbox" v-model="decap"> Decapitilize
+                        <button @click="message = reverseMessage" v-bind:disabled="isEmpty()" v-on:click="counter += 1">Reverse</button> Click counter: {{counter}}
+                        <p v-bind:class="[{blank: isEmpty()}, decap ? activeClass : errorClass]">{{reverseMessage | capitalize({decap: decap})}}</p>
+
+                        <h5>Computed even numbers list</h5>
+                        <ol><li v-for="n in evenNumbers">{{n}}</li></ol>
+                   </div>`
+    })
+
+    var app = new Vue({
+        el: '#app',
+        data: {
+            htmlText: '<strong>Hello</strong> world!',
+            todos: [
+                {text: 'Tree'},
+                {text: 'House'},
+                {text: 'Son'}
+            ]
         }
     })
 </script>
